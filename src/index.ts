@@ -18,16 +18,45 @@ async function main() {
     const vessel = await VesselApi.getById(newVessel.id);
     console.log(vessel)
 
-    // 4. Update a vessel
+    // 4. Get vessels by name (case insensitive)
+    const namedVessels = await VesselApi.getByName("titanic");
+    console.log(namedVessels.length);
+
+    // 5. Update a vessel
     const updatedVessel = await VesselApi.update(newVessel.id, { name: "Titanic II" });
     console.log(updatedVessel);
 
-    // 5. Delete a vessel
+    // 6. Delete a vessel
     const deletedVessel = await VesselApi.delete(newVessel.id);
     console.log(deletedVessel);
   } catch (error) {
     console.error("Error:", error);
   }
+
+  console.log("INTENTIONALLY FAILING CALLS")
+  const ABSENT_VESSEL_ID = 0;
+  try {
+    const vessel = await VesselApi.getById(ABSENT_VESSEL_ID);
+    console.log(vessel)
+  } catch (error) {
+    console.error("Get Error:", error);
+  }
+
+  try {
+    const updatedVessel = await VesselApi.update(ABSENT_VESSEL_ID, { name: "Titanic II" });
+    console.log(updatedVessel);
+  } catch (error) {
+    console.error("Update Error:", error);
+  }
+
+  try {
+    const deletedVessel = await VesselApi.delete(ABSENT_VESSEL_ID);
+    console.log(deletedVessel);
+  } catch (error) {
+    console.error("Delete Error:", error);
+  }
+
+  console.log("FINISHED")
 }
 
 main();
